@@ -24,8 +24,12 @@ def convert_to_ffm(df,type,numerics,categories,muti_cat,features,sep):
             datastring+=str(int(datarow['label']))#添加label
             for i,x in enumerate(catdict.keys()):#catdict记录特征是否为类别特征，i为特征的field_index,更具前面的
                 if(catdict[x]==0):#连续特征
+                    if datarow[x]==-1:
+                        continue
                     datastring=datastring+' '+'{}:{}:{}'.format(i,i,datarow[x])
                 elif catdict[x]==1:#类别特征
+                    if datarow[x]==-1:
+                        continue
                     if(x not in catcodes):#x特征第一次出现
                         catcodes[x]={}
                         catcodes[x][datarow[x]]=currentcode
@@ -37,6 +41,8 @@ def convert_to_ffm(df,type,numerics,categories,muti_cat,features,sep):
                     datastring=datastring+' '+'{}:{}:{}'.format(i,code,1)
                     #datastring=datastring+" "+str(i)+":"+str(int(code))+":1"
                 else:#多值离散特征的处理
+                    if datarow[x]==-1:
+                        continue
                     s=datarow[x].split(sep)
                     for ss in s:
                         if x not in catcodes:
